@@ -1,0 +1,8 @@
+#The below two 'template' keys are meant for internal use of the application
+templateKeyString:demo-app-template-key-string-00000000000
+templateValueString:RZYSiTOvgzLhxWaulrHfsYqVGYrDV9m7VxJLW2TLSj8ZCqRrZjGD4NIMoFRmqa5n6IU3ladBFO8dSgjx9ulstDDWwmrKxXssOCiNv23M0LQbl3mZUdBGtfZ4LpDWiS0uYW9VXh4JfDrbghRSA8hmcwHd91nLkYIWKzmQQtAeYRDSlLyZ8qX9axnkCNcXVZuhRzo8QFhw-000000000000000
+#The below keys can be used to control the application. The 'percentage' keys instruct the application on the operations it has to perform.
+GetPercentage:50
+InsertPercentage:30
+erasePercentage:20
+
