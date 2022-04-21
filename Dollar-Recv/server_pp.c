@@ -5,14 +5,14 @@
 #define ppServerName "ppxs" /* server process name (following $ or /G/) */
 
 #pragma section rest
-#include <crtlnsh> nolist
+#include <crtlns.h> nolist
 /* Note: Include 'search "$system.system.crtlnse"' in the ccomp command line
 for TNS/E native programs, or ...crltnsx for TNS/x. */
 #include <string.h> nolist
 #include <stdio.h> nolist
 #include <derror.h> nolist /* from ZGUARD, for FE... literals */
-#include <zsysc> nolist /* from ZSYSDEFS */
-#include <cextdecs (DEBUG, \
+#include <zsysc.h> nolist /* from ZSYSDEFS */
+#include <cextdecs.h (DEBUG, \
                     FILE_CLOSE_, \
                     FILE_GETRECEIVEINFO_,\
                     FILE_OPEN_,\

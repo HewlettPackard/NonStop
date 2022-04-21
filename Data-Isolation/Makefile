@@ -5,32 +5,22 @@
 #
 
 CURRENT=.
-TARGET=$(CURRENT)/bin/TEST_APP
+TARGET=$(CURRENT)/bin/ISO-App
 
-LIB_FOLDER= ../../../lib/
-LIBS=
+LIB_FOLDER= $(CURRENT)/lib/
 
 OPT=O0
 DATA_MODEL=Wlp64
 
-ifdef COMP_ROOT
-	export CC = "$(COMP_ROOT)/usr/bin/c11"
-else
-	export CC = c11
-endif
-
 SRCS := $(wildcard $(CURRENT)/src/*.cpp)
 OBJS := $(SRCS:.cpp=.o)
-INC := $(CURRENT)/include/
 
-INC_LIB= ../../../include/
-
-	
 %.o: %.cpp 
-	$(CC) -g  -$(OPT)  -Wextensions   -D_XOPEN_SOURCE_EXTENDED -I$(INC) -I $(INC_LIB) -$(DATA_MODEL)     -c -o $@ $<	
+	$(CXX) $(CXXFLAGS) -c -o $@ $< 
 
-$(TARGET):	 $(OBJS)	
-	$(CC)  -o $(TARGET) $(OBJS)  $(LIBS) -L $(LIB_FOLDER) -lnsfti -$(DATA_MODEL)  -Wsaveabend  -lcppc -lcpp4
+$(TARGET): $(OBJS)	
+	$(CXX)  -o $(TARGET) $(CXXFLAGS) $(OBJS) $(LIBUTIL) $(FTILIB) \
+		-Wsaveabend $(CXXLIBS)
 
 
 all:	$(TARGET) 
