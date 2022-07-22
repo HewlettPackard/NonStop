@@ -7,7 +7,7 @@ The library provides a Map data structure whose contents are always kept in sync
 NSFTI is part of suite of products packaged together under the name "NonStop middleware tools" and is shipped as T1150. It is installed in the directory '/usr/tandem/middlewaretools'
 
 # Where can I find the documentation for this product?
-The product documentation can be found at https://support.hpe.com/hpesc/public/docDisplay?docId=a00056322en_us&page=index.html
+The product documentation can be found at [HPE Docs](https://support.hpe.com/hpesc/public/docDisplay?docId=a00056322en_us&page=index.html)
 
 # About the examples
 Here are a few example applications to help you get started with NSFTI.
