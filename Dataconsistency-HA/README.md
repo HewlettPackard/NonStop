@@ -30,7 +30,7 @@ The application first reads the configuration file _config.txt_. It has to be no
 
 The _templateKeyString_ is used to generate __key__ to insert. The primary and the backup both use this template to generate the key. Similarly _templateValueString_ is used to generate the __value__ for the key to be inserted in the Map. 
 
-The _GetPercentage_ , _ErasePercentage_and _InsertPercentage_ values indicate the ratio in which the operations need to be performed.
+The _GetPercentage_ , _ErasePercentage_ and _InsertPercentage_ values indicate the ratio in which the operations need to be performed.
 
 ### Initialize the library
 The following code initializes the library
