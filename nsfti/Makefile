@@ -23,7 +23,7 @@ endif
 OPT = -O2
 COMMON_DIR = $(TOPDIR)/00_common
 
-export CFLAGS = $(OPT) -g -Wextensions -D_XOPEN_SOURCE_EXTENDED -Wnowarn 
+export CFLAGS = $(OPT) -g -Wextensions -D_XOPEN_SOURCE_EXTENDED -Wnowarn  -I/G/system/zsysdefs -I/G/system/zguard
 export CPPFLAGS = -D_XOPEN_SOURCE_EXTENDED 
 
 export CXXFLAGS = $(OPT) -Wlp64 -g -Wextensions -D_XOPEN_SOURCE_EXTENDED -Wnowarn \
