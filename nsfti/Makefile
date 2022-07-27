@@ -21,7 +21,7 @@ export AR = /usr/bin/ar
 endif
 
 OPT = -O2
-COMMON_DIR = $(TOPDIR)/+common
+COMMON_DIR = $(TOPDIR)/00_common
 
 export CFLAGS = $(OPT) -g -Wextensions -D_XOPEN_SOURCE_EXTENDED -Wnowarn 
 export CPPFLAGS = -D_XOPEN_SOURCE_EXTENDED 
