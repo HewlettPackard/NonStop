@@ -5,7 +5,7 @@ Both drive either the Guardian or OSS version of the example server. */
 #include <string.h> nolist
 #include <stdarg.h> nolist
 #include <derror.h> nolist /* from ZGUARD, for FE... literals */
-#include <zsysc.h> nolist /* from ZSYSDEFS */
+#include <zsysc> nolist /* from ZSYSDEFS */
 #include <cextdecs.h(DEBUG, FILE_OPEN_, FILE_READUPDATE64_, \
                     FILE_WRITEREAD64_, PROCESS_STOP_)>
 short svFNum; /* server process file number */

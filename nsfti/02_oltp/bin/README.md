@@ -5,4 +5,4 @@ client.py is the client that can be used as the client for the oltp server. Usin
 
 #run the oltp application as follows
 
-run -name=/G/SVR ./TEST_APP  -a 127.0.0.1 -p 8080 -m 20
+run -name=/G/SVR ./OLTP-App  -a 127.0.0.1 -p 8080 -m 20
