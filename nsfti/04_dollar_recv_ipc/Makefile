@@ -14,6 +14,7 @@ ifdef COMP_ROOT
 else
 	CRTLO = /usr/lib/crtlnsx.o
 endif
+all:   $(NSFTI_APP) $(PP_APP) $(REQ) 
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
@@ -31,7 +32,6 @@ $(PP_APP): server_pp.c
 $(REQ): requester.c
 	$(CC) -o $@ $(CFLAGS) $(CPPFLAGS) -Wsaveabend $<  
 
-all: $(NSFTI_APP) $(PP_APP) $(REQ)
 
 clean:
-	rm -f 
+	rm -f $(NSFTI_APP)  $(PP_APP) $(REQ) 

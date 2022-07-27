@@ -10,7 +10,7 @@
 #include <stdarg.h> nolist
 
 #include <derror.h> nolist /* from ZGUARD, for FE... literals */
-#include <zsysc.h> nolist /* from ZSYSDEFS */
+#include <zsysc> nolist /* from ZSYSDEFS */
 #include <cextdecs.h> nolist 
 
 enum { /* return code of interest from PROCESSHANDLE_COMPARE_ */

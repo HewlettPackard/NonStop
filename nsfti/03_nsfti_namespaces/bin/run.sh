@@ -5,6 +5,6 @@ then
     echo "Please set the _RLD_LIB_PATH and try again..."
 else 
     #Path is set trying to start the application
-    run -cpu=2 -name=/G/ftiap ./TEST_APP 
+    run -cpu=2 -name=/G/ftiap ./ISO-App 
 fi
 

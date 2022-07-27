@@ -11,7 +11,7 @@ for TNS/E native programs, or ...crltnsx for TNS/x. */
 #include <string.h> nolist
 #include <stdio.h> nolist
 #include <derror.h> nolist /* from ZGUARD, for FE... literals */
-#include <zsysc.h> nolist /* from ZSYSDEFS */
+#include <zsysc> nolist /* from ZSYSDEFS */
 #include <cextdecs.h (DEBUG, \
                     FILE_CLOSE_, \
                     FILE_GETRECEIVEINFO_,\
