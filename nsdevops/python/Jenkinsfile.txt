@@ -1,0 +1,76 @@
+properties(
+    [
+        [
+            $class: 'BuildDiscarderProperty',
+            strategy: [$class: 'LogRotator', numToKeepStr: '10']
+        ],	
+    ]
+)
+
+node ('master') {
+   def remote = [:]
+   remote.name = '<nsdev>'
+   remote.host = '<XX.YYY.ZZ.AA>'
+   remote.user = '<devops.user>'
+   remote.password = '<XXXX>'
+   remote.allowAnyHosts = true
+
+	withEnv(["NEXUS_VERSION=nexus3","NEXUS_PROTOCOL=http","NEXUS_URL= XX.YYY.ZZ.AA:8081","NEXUS_REPOSITORY=python-nexus-repo","NEXUS_CREDENTIAL_ID=python-user","NEXUS_CREDENTIAL_PASSWORD=hpnonstop"]){
+		stage('Code Checkout') { // for display purposes
+			// Get some code from a GitHub repository
+			git 'https://<devops-user>:<your-personal-token>@github.<yourcompanyname>.com/<devopsuser>/<NSDevOpsPythonQuickStart>.git/'
+		}
+		stage('Static Analysis') {
+			// Run the pylint
+			if (isUnix()) {			    
+				// pylint
+				sh "pylint --exit-zero --output-format=colorized ${env.WORKSPACE}/server/socketServer.py"
+				sh "pylint --exit-zero --output-format=colorized ${env.WORKSPACE}/client/socketClient.py"			
+				// /usr/bin/bandit
+				sh "/usr/bin/bandit -v -lll ${env.WORKSPACE}/server/socketServer.py"
+				sh "/usr/bin/bandit -v -lll ${env.WORKSPACE}/client/socketClient.py"		
+			} else {
+				bat("pylint --exit-zero --output-format=colorized ${env.WORKSPACE}\\client\\socketClient.py")
+				bat("pylint --exit-zero --output-format=colorized ${env.WORKSPACE}\\client\\socketClient.py")
+			}
+		}
+		stage("SonarQube Analysis") {
+			// Run the maven build, not need for python application
+			if (isUnix()) {
+				sh "/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectName=\"PythonStartKit\" -Dsonar.projectKey=<project key> -Dsonar.projectBaseDir=/var/jenkins_home/workspace/PythonKStart/ -Dsonar.sources=server,client -Dsonar.python.coverage.reportPATH=${env.WORKSPACE}/coverage.xml"
+			} else {
+				bat("C:\\Applications\\bin\\sonar-scanner -Dsonar.projectName=\"PythonStartKit\" -Dsonar.projectKey=<project key> -Dsonar.projectBaseDir=${env.WORKSPACE} -Dsonar.sources=server,client -Dsonar.python.coverage.reportPATH=${env.WORKSPACE}\\coverage.xml")
+			}
+		} 
+		stage('Binaries To NonStop') {
+			sshCommand remote: remote, command: "mkdir -p /tmp/PythonKStart/server"
+			sshCommand remote: remote, command: "mkdir -p /tmp/PythonKStart/client"         
+			sshPut remote: remote, from: 'server/socketServer.py', into: '/tmp/PythonKStart/server/socketServer.py'
+			sshPut remote: remote, from: 'client/socketClient.py', into: '/tmp/PythonKStart/client/socketClient.py'
+			sshCommand remote: remote, command: "cd /tmp/PythonKStart/;ls -lrt"        
+		}
+		
+		stage('Unit Test') {
+			sshCommand remote: remote, command: "cd /tmp/PythonKStart/;/usr/bin/python server/socketServer.py & "
+			sshCommand remote: remote, command: "cd /tmp/PythonKStart/client;/usr/bin/python socketClient.py"       
+			sshCommand remote: remote, command: "/bin/ps -eaf | /bin/grep socketServer | /bin/grep -v grep | /bin/awk '{ print \$2 }'| /bin/xargs /bin/kill -9"
+		}
+		stage('Regression Test') {
+			//Add steps to copy regression test suite, setup test env and run the regression tests
+		}
+   
+		stage('Artifact Repository Upload'){
+			if (isUnix()) {
+				echo "Create python package"
+				...
+				...
+				sh "tar -cvf /tmp/PythonKStart-1.0.${BUILD_NUMBER}.tar /tmp/PythonKStart > tar.log 2>&1"
+				sh "gzip /tmp/PythonKStart-1.0.${BUILD_NUMBER}.tar"
+				sh "twine upload --verbose /tmp/PythonKStart-1.0.${BUILD_NUMBER}.tar.gz --repository-url=http://XX.YYY.ZZ.AA:8081/repository/python-nexus-repo/ -u <user name> -p <password>"			
+			} else {
+				bat("7z a -ttar -so dwt.tar C:\\PythonKStart | 7z a -si PythonKStart-1.0.${BUILD_NUMBER}.tar.gz")
+				bat("twine upload --verbose c:\\TEMP\\PythonKStart-1.0.${BUILD_NUMBER}.tar.gz --repository-url=http://XX.YYY.ZZ.AA:8081/repository/python-nexus-repo/ -u <user name> -p <password>")
+			}
+		}
+	}
+ }//node

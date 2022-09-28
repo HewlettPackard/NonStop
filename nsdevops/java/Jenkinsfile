@@ -1,0 +1,63 @@
+node ('MASTER') {
+   def mvnHome
+   def remote = [:]
+   remote.name = '<kronos>'
+   remote.host = '<XX.YYY.ZZ.AA>'
+   remote.user = '<devops.user>'
+   remote.password = '<XXXX>'
+   remote.allowAnyHosts = true
+   stage('Code Checkout') { // for display purposes
+      // Get some code from a GitHub repository
+      git 'https://<devops-user>:<your-personal-token>@github.<yourcompanyname>.com/<devops-user>/<NSDevOpsJavaQuickStart>.git/'
+      // Get the Maven tool.
+      // ** NOTE: This 'M3' Maven tool must be configured
+      // **       in the global configuration.           
+      mvnHome = tool 'Maven'
+   }
+   stage('Automated Build') {
+      // Run the maven build
+      withEnv(["MVN_HOME=$mvnHome"]) {
+		// If Jenkins master is behind a firewall use the 
+		// -DproxySet=true -DproxyHost=<host> -DproxyPort=<port>
+
+         if (isUnix()) {
+            sh '"$MVN_HOME/bin/mvn" clean package'
+         } else {
+            bat(/"%M2_HOME%\bin\mvn" clean package /)
+         }
+         
+      }
+ 
+   }
+       stage('Static Analysis') {
+		// If Jenkins master is behind a firewall use the 
+		// -DproxySet=true -DproxyHost=<host> -DproxyPort=<port>
+
+         if (isUnix()) {
+            sh '"$MVN_HOME/bin/mvn" checkstyle:checkstyle'
+         } else {
+           bat(/"%M2_HOME%\bin\mvn"  checkstyle:checkstyle /)
+               }
+    }
+
+    stage('Binaries To NonStop') {
+
+    sshPut remote: remote, from: 'C:/Applications/Jenkins/workspace/ SampleNightlyBuildPipeline/server/target/javahelloserver-1.0.0-SNAPSHOT.jar', into: '/home/devopsuser/javaquickstart/javahelloserver-1.0.0-SNAPSHOT.jar'
+    sshPut remote: remote, from: 'C:/Applications/ Jenkins/workspace/SampleNightlyBuildPipeline/junit-platform-console-standalone-1.5.1.jar' , into: '/home/devopsuser/javaquickstart/junit-platform-console-standalone-1.5.1.jar'
+    sshCommand remote: remote, command: "cd /home/devopsuser/javaquickstart;ls -lrt"
+    }
+    stage('Unit Test') {
+     sshCommand remote: remote, command: "cd /home/devopsuser/javaquickstart;/usr/tandem/nssjava/jdk180_l80/bin/java -jar junit-platform-console-standalone-1.5.1.jar -cp javahelloserver-1.0.0-SNAPSHOT.jar -c com.hpe.nsk.nsdevops.server.JavaHelloServer"
+    }
+
+    stage('Regression Test') {
+     //Add steps to copy regression test suite, setup test env and run the regression tests
+    }
+    stage('Artifact Repository Upload'){
+	if (isUnix()) {
+            sh '"$MVN_HOME/bin/mvn" deploy:deploy -DskipTests Dmaven.install.skip=false'
+         } else {
+        bat(/"%M2_HOME%\bin\mvn" deploy -DskipTests -Dmaven.install.skip=false/)
+	  }
+    }
+   }//node
