@@ -18,5 +18,5 @@ Junit					1.5.1 (included in the package)
 Nexus Repository Manager	3.17.0.01 or later
 
 #Usage Instructions 
-Refer to JavaJNIStarterKitUsageInstruction.docx for details
+Refer to JavaJNIStarterKitUsageInstructions.docx for details
 
