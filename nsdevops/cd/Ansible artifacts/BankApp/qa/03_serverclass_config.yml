@@ -1,0 +1,62 @@
+---
+#
+#  Copyright 2020-2021 Hewlett Packard Enterprise Development LP
+# 
+#      ALL RIGHTS RESERVED
+# 
+
+# Refer full yaml or manual for documentation of the parameters
+# Update following parameter values as appropriate to your setup
+
+action: sc_status
+config_data:
+  pdmi:
+    serverclass: 
+      program: 
+        node: default
+        file: /usr/tandem/nssjava/jdk180_l80/bin/java
+      process_type: OSS
+      oss:
+        arglist: [-Dserver.socket.port=5001, com.hpe.nsk.nsdevops.server.Server]
+        cwd: /home/qa/app
+        env:
+          CLASSPATH: ".:bankapp-1.0.jar"           
+        std_error: /home/qa/app/stderr
+        std_output: /home/qa/app/stderr
+        std_input: null
+      auto_restart: 10
+      create_delay:
+        interval: 1
+        unit: MINS
+      delete_delay:
+        interval: 10
+        unit: MINS
+      timeout:
+        interval: -1
+        unit: MINS
+      define:
+        TCPIP^PROCESS^NAME:
+         class: MAP
+         file:
+           name: $ZTC0
+           node: default     
+        PTCPIP^FILTER^KEY:
+           class: MAP
+           file:
+            name: RRKEY
+            node: default
+        PTCPIP^FILTER^TCP^PORTS:
+           class: MAP
+           file:
+             name: $SYSTEM.P10.P64000
+             node: default                
+      link_algorithm: DEFAULT
+      link_depth: 2
+      max_links: 10
+      max_servers: 4
+      num_static: 4
+      owner: 
+       node: default
+       id: default
+      security: default      
+                  

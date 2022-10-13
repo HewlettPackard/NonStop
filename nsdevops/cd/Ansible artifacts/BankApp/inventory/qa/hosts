@@ -1,0 +1,2 @@
+[cfot]
+<NonStop Server host name> ansible_ssh_port=22 ansible_ssh_user=<NonStop user >

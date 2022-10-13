@@ -1,0 +1,254 @@
+---
+#
+#  Copyright 2020-2021 Hewlett Packard Enterprise Development LP
+# 
+#      ALL RIGHTS RESERVED
+# 
+
+# Standard fields of PDMI subsystem product for PATHWAY
+# Update following parameter values as appropriate to your setup
+
+# action: action to be performed on PDMI subsystem for PATHWAY
+# This is an input and output field
+# Valid values : pathway_status, pathway_start, pathway_stop
+# Example: pathway_start
+# Default: pathway_status
+action: pathway_status
+#node: specifies the name of NonStop node for the specified action
+#This is an input and output field
+#valid values: <system-name> | default
+#<system-name> : specifies the name of the node on which the pathmon process resides. 
+#A system name consists of one to seven alphanumeric characters.
+#The first alphanumeric character must be a letter.
+# default: The current node where is action is being executed
+#Example: RHVNS2
+#Default: default
+node: default
+#pathmon_name: specifies the name of pathmon for the specified action
+#This is an input and output field
+#valid values: <process-name>
+#<process-name>: can be a maximum of six characters beginning with a 
+#dollar sign ($) and followed by 1 to 5 alphanumeric characters.
+#The first character must be a letter.
+#Example: $PMON1
+#Default: This field is mandatory
+pathmon_name: /no/default
+#pathway_start_mode: specifies start mode for pathway_start action
+#This is an input field
+#Valid values : COLD | COOL
+#COLD: When you start the PATHWAY environment for the first time, you must specify the COLD start
+#option. The COLD start option tells the PATHMON process to create the configuration file,
+#PATHCTL, that will store configuration information.
+#COOL: When you restart the PATHWAY environment, you must specify the COOL start option. The
+#COOL start option tells the PATHMON process to get the configuration information from
+#the existing PATHCTL file. A cool start is usually much faster than a cold start.
+#Example: COOL
+#Default: COLD
+pathway_start_mode: COLD
+
+#pathway_stop_mode : specifies stop mode for pathway_stop action
+#This is an input field
+#Valid values : ORDERLY| IMMEDIATE
+#ORDERLY   :  ORDERLY allows work in progress to complete before shutting down.
+#The ORDERLY option requires the most time to complete the shutdown operation, 
+#because all transactions in progress are allowed to complete before 
+#objects (server objects) involved in the transaction are stopped.
+#IMMEDIATE : Specifies to bring down the system as quickly as possible.
+#If completed successfully, the IMMEDIATE option stops objects immediately, 
+#regardless of the presence of pending requests and incomplete operations. 
+#Unlinked server processes are not able to perform any epilog processing.
+#The status of any outstanding transactions is unknown.
+#Example: IMMEDIATE
+#Default: ORDERLY
+pathway_stop_mode: ORDERLY
+#pdmi_result: result of PDMI action performed
+#This is an output field
+pdmi_result:
+  #The return code for PDMI pathway operation
+  # 0 : success, 1 : warn, -1 : fail
+  #Example: 0
+  code: /not/to/be/modified
+  #The return message for PDMI pathway operation
+  #Example: pathway started successfully  
+  description: /not/to/be/modified
+
+#Configuration parameters for PDMI  
+config_data:
+  #PDMI product
+  pdmi:
+    #serverclass: shows list of serverclass configured
+    #This is an output field
+    #Example: [server1, server2]         
+    serverclasses: []
+    #pathway : configuration parameters for PATHWAY  
+    pathway:
+      #status : shows the state of the pathway.
+      #This is an output field         
+      #Values are: NOT-CONFIGURED, SHUTTING-DOWN (IN-PROGRESS), SHUTTING-DOWN (FAILED), RUNNING
+      status: /not/to/be/modified
+      #DUMASK             
+      #default_user_mask: specifies the default user mask (DUMASK), 
+      #which is used for OSS servers that do not have their UMASK attribute set. 
+      #The PATHMON process uses this attribute as a file mode creation mask 
+      #while starting the server process.
+      #This is an input and output field                 
+      #valid values : "<number>" | default
+      #<number> - The Octalnumber entry is a three digit octal number that specifies
+      #the default maximum permissions allowed for owner, group, and others.This value should be 
+      # in double quotes
+      #Example : "544"
+      #Default: default ( "000" )
+      default_user_mask: default
+      #MAXSERVERCLASSES
+      #max_serverclasses: specifies the maximum number of server class 
+      #descriptions that you can add to the PATHMON configuration file. 
+      #This is a mandatory input and output field             
+      #valid values : 0 to 4095 
+      #Example : 500
+      #Default: 200
+      max_serverclasses: 200
+      #MAXSERVERPROCESSES
+      #max_serverprocesses : specifies the maximum number of server processes 
+      #that you can define for all server classes
+      #This is a mandatory input and output field             
+      #valid values : 0 to 4095 
+      #The total of all max_server of serverclass parameter for all server classes 
+      #is limited to the value of max_serverprocesses.
+      #Example : 500
+      #Default: 1000
+      max_serverprocesses: 1000
+      #GLINKALGORITHM           
+      #glink_algorithm  : Specifies the value of the algorithm which PATHMON 
+      #process uses to select link grant algorithm for granting link. 
+      #This is an input and output field             
+      #valid values : REQUESTERCPU | DEFAULT
+      #For REQUESTERCPU:
+      #       The link grant algorithm gives preference to static server processes
+      #       running on the CPU or configured with the CPU same as that of the
+      #       requester.
+      #For DEFAULT:
+      #       The link grant algorithm gives preference to static server
+      #       processes running on any CPU.
+      #Example: REQUESTERCPU
+      #Default: DEFAULT      
+      glink_algorithm: DEFAULT
+      #SCLONGPROCESSNAME
+      #long_process_name: this attribute enables or disables longer server process
+      #names for system generated processes.
+      #This is an input and output field             
+      #valid values : ON | OFF | default
+      #Example : ON
+      #Default: default( OFF )
+      long_process_name: default
+      #SPREBALANCEMODE
+      #rebalance_mode: specifies the mode in which PATHMON exhibits the 
+      #enhanced rebalancing of server process after processor reload.
+      #This is an input and output field             
+      #valid values : DISABLE | AUTO | MANUAL | default
+      #Example : MANUAL
+      #Default: default ( AUTO )         
+      rebalance_mode: default
+      #MAXDEFINES
+      #max_defines : specifies the maximum number of DEFINE definitions that you can
+      #specify for all server classes in a Pathway environment. 
+      #This is a mandatory input and output field  
+      #valid values : 0 to 8191
+      #Example : 500
+      #Default: 1000
+      max_defines: 1000
+      #MAXASSIGNS
+      #max_assigns: specifies the maximum number of ASSIGNs allowed by Pathway
+      #per server class and across all server classes in a given Pathway environment.
+      #This is a mandatory input and output field   
+      #valid values : 0 to 8191
+      #Example : 500
+      #Default: 1000
+      max_assigns: 1000
+      #MAXPARAMS
+      #max_params: specifies the maximum number of PARAM messages that you can 
+      #specify across all server classes in a given Pathway environment. 
+      #This is a mandatory input and output field  
+      #valid values : 0 to 4095
+      #Example : 500
+      #Default: 200
+      max_params: 200
+      #MAXSTARTUPS
+      #max_startups: specifies the maximum number of server classes that can 
+      #have STARTUP messages.
+      #This is a mandatory input and output field  
+      #valid values : 0 to 4095
+      #Example : 500
+      #Default: 200
+      max_startups: 200
+      #MAXLINKMONS
+      #max_linkmons: specifies the maximum number of ACS subsystem processes that can
+      #communicate with the PATHMON process at the same time. 
+      #ACS subsystem processes manage communication between Pathway server classes and all
+      #Pathsend requestors executing within the processor of the ACS subsystem processes
+      #valid values : 0 to 800
+      #This is an input and output field
+      #Example : 500
+      #Default: 16
+      max_linkmons: 16
+      #MAXPATHCOMS
+      #max_pathcoms: specifies the maximum number of PATHCOM processes that can run 
+      #simultaneously within Pathway.
+      #This is an input and output field           
+      #valid values : 1 to 100
+      #Example : 10
+      #Default: 5       
+      max_pathcoms: 5
+      #MAXSPI
+      #max_spi: specifies the maximum number of Subsystem Programmatic Interface (SPI)
+      #processes that can run simultaneously within the Pathway environment. 
+      #SPI is part of the HPE Distributed Systems Management (DSM) facility. 
+      #For more information on the SPI interface, see the NonStop TS/MP
+      #and Pathway Management Programming Commands Manual.
+      #This is an input and output field         
+      #valid values : 1 to 100
+      #Example : 10
+      #Default: 1      
+      max_spi: 1
+      #NODEINDEPENDENT
+      #node_independent : designates whether unspecified node names in Guardian file 
+      #names resolve to the node name *, a generic name that designates whatever node the
+      #PATHMON process is running on after cool start.
+      #This is an input and output field         
+      #valid values : ON | OFF | default
+      #Example : ON
+      #Default: default ( OFF )
+      node_independent: default
+      #security: specifies the users who can alter the state of the PATHMON-controlled objects.
+      #This is an input and output field         
+      #valid values: "A" (Any local user) | 
+      #              "G" (A group member or owner) | 
+      #              "O" (Owner only) |
+      #              "N" (Any network user) | 
+      #              "C" (Anymember of owner's community (local or remote user having same group ID as owner)) |
+      #              "U" (Any member of owner's user class (local or remote user having same group ID and userID as owner)) | 
+      #              "-" (Local super ID) | default
+      # This value should be mentioned in double quotes
+      #Example : "G"
+      #Default: default ( "O" )
+      security: default
+      #owner: specifies the user ID allowed to issue manage pathway environment.
+      #This is an input and output field      
+      owner:
+        #node: specifies the name of NonStop node for the specified action
+        #This is an input and output field
+        #valid values: <system-name> | default | * (should be inside quotes and/or with backslash)
+        #<system-name> : specifies the name of the node on which the pathmon process resides. 
+        #A system name consists of one to seven alphanumeric characters.
+        #The first alphanumeric character must be a letter.
+        # default: The node where the pathmon process is configured
+        #Example: RHVNS2
+        #Default: default
+        node: default
+        #id: specifies the user ID allowed to issue manage pathway environment.
+        #This is an input and output field
+        #valid values: group-number, user-number | 
+        #              group-name.user-name
+        #Example: 200,200
+        #Default: default (Owner of the PATHMON process)
+        id: default
+    

@@ -1,0 +1,204 @@
+---
+#
+#  Copyright 2020-2021 Hewlett Packard Enterprise Development LP
+# 
+#      ALL RIGHTS RESERVED
+# 
+
+# Standard fields of PDMI subsystem product for PATHMON
+# Update following parameter values as appropriate to your setup
+
+# action: action to be performed on PDMI subsystem for PATHMON
+# This is an input and output field
+# Valid values : pathmon_status, pathmon_configure, pathmon_remove
+# Example: pathmon_configure
+# Default: pathmon_status
+action: pathmon_status
+#node: specifies the name of NonStop node for the specified action
+#This is an input and output field
+#valid values: <system-name> | default
+#<system-name> : specifies the name of the node on which the pathmon process resides. 
+#A system name consists one to seven alphanumeric characters.
+#The first alphanumeric character must be a letter.
+# default: The current node where the action is being executed
+#Example: RHVNS2
+#Default: default
+node: default
+#pathmon_name: specifies the name of pathmon for the specified action
+#This is an input and output field
+#valid values: <process-name>
+#<process-name>: can be a maximum of six characters beginning with a 
+#dollar sign ($) and followed by 1 to 5 alphanumeric characters.
+#The first character must be a letter.
+#Example: $PMON1
+#Default: This field is a mandatory field
+pathmon_name: /no/default
+
+#pdmi_result: result of PDMI action performed
+#This is an output field
+pdmi_result:
+  #The return code for PDMI pathmon operation
+  # 0 : success, 1 : warn, -1 : fail
+  #Example: 0
+  code: /not/to/be/modified
+  #The return message for PDMI pathmon operation
+  #Example: pathmon started successfully  
+  description: /not/to/be/modified
+
+#Configuration parameters for PDMI  
+config_data:
+  #PDMI product
+  pdmi:
+    #version: version of Pathway Domain Management Interface(PDMI)
+    #This is an input and output field
+    #Example: T0845L01ACB
+    #Default: current version of PDMI available in the system  
+    version: default
+    #pathmon : configuration parameters for PATHMON process
+    pathmon:
+      #process: contains process parameters     
+      process:
+        #status : shows the state of the PATHMON Process.
+        #This is an output field
+        #Values are: NOT-CONFIGURED, STARTING, SHUTTING-DOWN, RUNNING
+        status: /not/to/be/modified
+        #primary_cpu: specifies the processor on which the primary pathmon
+        #process must be started.
+        #This is a mandatory input and output field
+        #valid values : 0 to 15
+        #Example: 1
+        #Default: 0
+        primary_cpu: 0
+        #backup_cpu: specifies the processor where the PATHMON backup process runs.
+        #The PATHMON process stops the existing backup process and creates
+        #a new backup process in the processor that you specify.
+        #This is an input and output field
+        #valid values : 0 to 15  | -1
+        # -1 : specifies the PATHWAY to select the backup CPU)        
+        #Example: 1
+        #Default: -1 (No Backup CPU)    
+        backup_cpu: -1
+      #control_file : specifies the PATHCTL file
+      control_file:
+        #status : shows the state of the Control File
+        #This is an output field
+        #Values are: NOT-CONFIGURED, CLOSED, OPEN                 
+        status: /not/to/be/modified
+        #node: specifies the name of NonStop node for the specified action
+        #This is an input and output field
+        #valid values: <system-name> | default
+        #<system-name> : specifies the name of the node on which the pathmon process resides. 
+        #A system name consists of one to seven alphanumeric characters.
+        #The first alphanumeric character must be a letter.
+        # default: The node where the pathmon process is configured
+        #Example: RHVNS2
+        #Default: default
+        node: default
+        #name : specifies the name of the PATHCTL File
+        #This is an input and output field 
+        #valid values are : <pathctl-name>
+        #<pathctl-name>   : <volume-name>.<subvolume-name>.<filename>
+        #<volume-name>    : specifies the name of the volume on which the control file resides. 
+        #A volume name consists of a dollar sign ($) followed by one to 
+        #seven alphanumeric characters; the first alphanumeric character must be a letter.
+        #<subvolume-name> : specifies the name of the subvolume on which the file resides.
+        #A subvolume name has one to eight alphanumeric characters; the first character must be a letter.
+        #<filename>       : specifies the name of pathctl file.
+        #A file name has one to eight alphanumeric characters; the first character must be a letter.
+        #This is a mandatory input and output field     
+        #Example : $system.system.pmon1
+        #Default: <user-default-volume>.<user-default-subvolume>.<pathmon-process-name>
+        name: default
+      #log: specifies the names of the files used for logging events ,  
+      #specifies the format and filters of those messages.
+      #This an input and output field        
+      log:
+        #configuration1 : specifies the log configuration1      
+        configuration1:
+          #status : shows the state of the LOG1 File
+          #This is an output field
+          #Values are: NOT-CONFIGURED, CLOSED, OPEN        
+          status: /not/to/be/modified
+          #node: specifies the name of NonStop node for the specified action
+          #This is an input and output field
+          #valid values: <system-name> | default | * (should be inside quotes and/or with backslash)
+          #<system-name> : specifies the name of the node on which the pathmon process resides. 
+          #A system name consists of one to seven alphanumeric characters.
+          #The first alphanumeric character must be a letter.
+          # default: node name which the system configures for log field
+          #Example: RHVNS2
+          #Default: default
+          node: default
+          #file : specifies the log file used for logging events
+          #This is an input and output field           
+          #valid values are : <logfile-name> | <ems-collector>
+          #<logfile-name>   : [<volume-name>.<subvolume-name>.]<filename>
+          #<volume-name>    : specifies the name of the volume on which the log file resides. 
+          #A volume name consists of a dollar sign ($) followed by one to 
+          #seven alphanumeric characters; the first alphanumeric character must be a letter.
+          #<subvolume-name> : specifies the name of the subvolume on which the file resides.
+          #A subvolume name has one to eight alphanumeric characters; the first character must be a letter.
+          #<filename>       : specifies the name of log file.
+          #A file name has one to eight alphanumeric characters; the first character must be a letter.
+          #<ems-collector>  : specifies the ems collector name. The valid values can be 
+          #primary EMS collector ($0) or alternate EMS collector configured in system.
+          #Example : $system.system.log1
+          #Default: $0 (Default EMS Collector)
+          file: $0
+          #format : specifies type of log message
+          #This is an input and output field
+          #valid values: event | text
+          #Example : text
+          #Default: event
+          format: event
+          #log_status_messages : specifies the status events to be logged or not
+          #This is an input and output field 
+          #valid values: yes | no               
+          #Example : yes
+          #Default: yes          
+          log_status_messages: yes
+        #configuration2 : specifies the log configuration2
+        #This is an input and output field
+        #Default : configuration2 is not configured          
+        configuration2:
+          #status : shows the state of the LOG2 File
+          #This is an output field
+          #Values are: NOT-CONFIGURED, CLOSED, OPEN        
+          status: /not/to/be/modified
+          #node: specifies the name of NonStop node for the specified action
+          #This is an input and output field
+          #valid values: <system-name> | default | * (should be inside quotes and/or with backslash)
+          #<system-name> : specifies the name of the node on which the pathmon process resides. 
+          #A system name consists of one to seven alphanumeric characters.
+          #The first alphanumeric character must be a letter.
+          # default: node name which the system configures for log field
+          #Example: RHVNS2
+          #Default: default
+          node: default
+          #file : specifies the log file used for logging events
+          #This is an input and output field
+          #valid values are : <logfile-name> | <ems-collector>
+          #<logfile-name>   : [<volume-name>.<subvolume-name>.]<filename>
+          #<volume-name>    : specifies the name of the volume on which the log file resides. 
+          #A volume name consists of a dollar sign ($) followed by one to 
+          #seven alphanumeric characters; the first alphanumeric character must be a letter.
+          #<subvolume-name> : specifies the name of the subvolume on which the file resides.
+          #A subvolume name has one to eight alphanumeric characters; the first character must be a letter.
+          #<filename>       : specifies the name of log file.
+          #A file name has one to eight alphanumeric characters; the first character must be a letter.
+          #<ems-collector>  : specifies the ems collector name. The valid values can be 
+          #primary EMS collector ($0) or alternate EMS collector configured in system.
+          #Default: null (This field is not considered)
+          file: null
+          #format : specifies type of log message
+          #This is an input and output field                              
+          #valid values:  event | text
+          #Example : text
+          #Default: null (This field is not considered)          
+          format: null
+          #log_status_messages : specifies the status events to be logged or not
+          #This is an input and output field
+          #valid values: yes | no               
+          #Example : yes
+          #Default: null (This field is not considered)          
+          log_status_messages: null

@@ -1,0 +1,122 @@
+---
+#
+#  Copyright 2020-2021 Hewlett Packard Enterprise Development LP
+# 
+#      ALL RIGHTS RESERVED
+# 
+####################################
+####################################
+#   USE CASE : Create a pathway environment on a NonStop Server and deploy an application 
+#   in this environment using Ansible
+#   Following are the steps used for this
+#   1. Download an application from nexus artifact repository
+#   2. Deliver an application to NonStop Server for a given user  
+#	3. Configure Pathmon environment  
+#	4. Configure and start Pathway enviromnet
+#	5. Configure Serverclass and deploy an application in a pathway environment
+
+# Make appropriate changes to the parameters used in this playbook
+
+####################################
+####################################
+# Executing playbook
+# This is executed through Jenkins pipeline
+# Alternatively this can be excuted by a command line as follow#  
+# For Dev user : ansible-playbook bankapp.yml --extra-vars "pathmon_name=\$dev role=dev sc_name=scdev" --ask-vault-pass -i ./inventory/dev/hosts -v
+# For QA user : ansible-playbook bankapp.yml --extra-vars "pathmon_name=\$qa role=qa sc_name=scqa" --ask-vault-pass -i ./inventory/qa/hosts -v
+# For Production user : ansible-playbook bankapp.yml --extra-vars "pathmon_name=\$prod0 role=production sc_name=scprod" --ask-vault-pass -i ./inventory/production/hosts -v   
+
+- hosts: localhost
+  gather_facts: no     
+  no_log: false  
+   
+  tasks:
+  - include_vars: ./vars/vars.yml
+    no_log: true
+    
+  - include_vars: nexus.yml
+    no_log: true
+    
+  - name: download maven artifact from nexus repository
+    maven_artifact:
+      artifact_id: "bankapp"      
+      dest: "."
+      extension: "jar" 
+      group_id: "com.hpe.nsk.nsdevops"
+      state: "present"
+      timeout: 10
+      username: "{{username}}"
+      password: "{{password}}"
+      verify_checksum: download
+      version: "1.0"
+      repository_url: "{{repository_url}}"     
+    
+- hosts: all
+  gather_facts: no
+  no_log: false    
+  
+  pre_tasks:
+  - include_vars: nexus.yml
+    no_log: true
+    
+  - include_vars: ../vars/vars.yml
+    no_log: true
+  
+  - name: deliver an application
+    copy:
+       src: "./{{appfile}}"
+       dest: "/home/{{role}}/app/"  
+     
+  - name: load configuration file for pathmon
+    include_vars:      
+      file: "../{{role}}/01_pathmon_config.yml"
+    no_log: true 
+  
+  tasks:   
+  
+  - name: configure pathmon
+    include_role:
+         name: pdmi
+    vars:
+        action : "pathmon_configure"
+        pathmon_name: "{{pathmon_name}}"    
+     
+    
+  - name: load configuration file for pathway
+    include_vars:      
+      file: "./{{role}}/02_pathway_config.yml"
+    no_log: true 
+ 
+  - name: start pathway
+    include_role:
+      name: pdmi      
+    vars:
+     action : "pathway_start"
+     pathmon_name: "{{pathmon_name}}"     
+
+
+  - name: load configuration file for serverclass
+    include_vars:      
+      file: "./{{role}}/03_serverclass_config.yml"
+    no_log: true   
+    
+  - name: configure serverclass
+    vars:
+        action : "sc_configure"
+        sc_name: "{{sc_name}}"
+        pathmon_name: "{{pathmon_name}}"  
+    include_role:
+         name: pdmi
+  
+ 
+  - name: start serverclass
+    vars:
+        action : "sc_start"
+        pathmon_name: "{{pathmon_name}}"
+        sc_name: "{{sc_name}}"
+    include_role:
+         name: pdmi    
+   
+  - name: print the message
+    ansible.builtin.debug:
+       msg: "Application is successfully delivered and deployed at {{role}} environment"

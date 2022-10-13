@@ -1,0 +1,25 @@
+---
+#
+#  Copyright 2020-2021 Hewlett Packard Enterprise Development LP
+# 
+#      ALL RIGHTS RESERVED
+# 
+
+# Refer full yaml or manual for documentation of the parameters
+# Update following parameter values as appropriate to your setup
+
+action: pathway_status
+node: default
+pathmon_name: /no/default
+pathway_start_mode: COLD
+pathway_stop_mode: ORDERLY
+config_data:
+  pdmi:
+    pathway:
+      max_serverclasses: 200
+      max_serverprocesses: 1000
+      max_defines: 1000
+      max_assigns: 1000
+      max_params: 200
+      max_startups: 200 
+      max_linkmons: 16 

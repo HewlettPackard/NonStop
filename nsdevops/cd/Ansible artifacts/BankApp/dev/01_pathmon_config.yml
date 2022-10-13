@@ -1,0 +1,20 @@
+---
+#
+#  Copyright 2020-2021 Hewlett Packard Enterprise Development LP
+# 
+#      ALL RIGHTS RESERVED
+# 
+# Refer full yaml or manual for documentation of the parameters
+# Update following parameter values as appropriate to your setup
+
+action: pathmon_status
+node: default
+pathmon_name: /no/default
+config_data:
+  pdmi:
+    pathmon:
+      process:
+        primary_cpu: 0
+      control_file:
+        node: default
+        name: default

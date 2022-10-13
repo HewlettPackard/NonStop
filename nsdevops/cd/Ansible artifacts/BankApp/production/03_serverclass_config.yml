@@ -1,0 +1,756 @@
+---
+#
+#  Copyright 2020-2021 Hewlett Packard Enterprise Development LP
+# 
+#      ALL RIGHTS RESERVED
+# 
+
+# Standard fields of PDMI subsystem product for serverclass
+# Update following parameter values as appropriate to your setup
+
+# action: action to be performed on PDMI subsystem for serverclass
+# This is an input and output field
+# Valid values : sc_status, sc_configure, sc_thaw, sc_start, sc_freeze, sc_stop, sc_remove
+# Example: sc_start
+# Default: sc_status
+action: sc_status
+
+#node: specifies the name of NonStop node for the specified action
+#This is an input and output field
+#valid values: <system-name> | default
+#<system-name> : specifies the name of the node on which the pathmon process resides. 
+#A system name consists of one to seven alphanumeric characters.
+#The first alphanumeric character must be a letter.
+# default: The current node where the action is being executed
+#Example: RHVNS2
+#Default: default
+node: default
+#pathmon_name: specifies the name of pathmon for the specified action
+#This is an input and output field
+#valid values: <process-name>
+#<process-name>: can be a maximum of six characters beginning with a 
+#dollar sign ($) and followed by 1 to 5 alphanumeric characters.
+#The first character must be a letter.
+#Example: $PMON1
+#Default: This field is mandatory
+pathmon_name: /no/default
+
+#sc_name: specifies the name of serverclass for the specified action
+#This is an input and output field
+#valid value : alphanumeric or hyphen characters and must start with a letter 
+#unique within the Pathway environment
+#valid length: 1-15
+#Example: websvr1
+#Default: This field is mandatory
+sc_name: /no/default
+
+#sc_stop_mode: specifies stop mode for sc_stop action
+#This is an input field
+#valid value : forced | default
+#forced : stops all the server processes (including associative server process started by this PATHMON)
+#forcefully without waiting for the them to perform clean up or terminate themselves.
+#default: No option for stop action
+#Example: forced
+#Default: default
+sc_stop_mode: default
+
+#pdmi_result: result of PDMI action performed
+#This is an output field
+pdmi_result:
+  #The return code for PDMI serverclass operation
+  # 0 : success, 1 : warn, -1 : fail
+  #Example: 0
+  code: /not/to/be/modified
+  #The return message for PDMI serverclass operation
+  #Example: serverclass started successfully
+  description: /not/to/be/modified
+#Configuration parameters for PDMI
+config_data:
+#PDMI product
+  pdmi:
+    #serverclass: specifies the configuration parameters for PATHWAY serverclass
+    serverclass:
+      #status: contains the status of the serverclass
+      #This is an output field       
+      #valid values : NOT-CONFIGURED, THAWED, RUNNING, FROZEN-STOPPED
+      #               FREEZE-PENDING, FROZEN-RUNNING, PENDING
+      status: /no/default
+      #PROGRAM
+      #program: specifies the name of the object file to be used by the 
+      #servers in this server class.
+      #This is a mandatory input and output field                        
+      program:
+        #node: specifies the name of NonStop node for the specified action
+        #This is an input and output field
+        #valid values: <system-name> | default | * (should be inside quotes and/or with backslash)
+        #<system-name> : specifies the name of the node on which the pathmon process resides. 
+        #A system name consists of one to seven alphanumeric characters.
+        #The first alphanumeric character must be a letter.
+        # default: The current node where the action is being executed
+        #Example: RHVNS2
+        #Default: default
+        node: default
+        #file: specifies the name of the object file to be used by the
+        #valid values : Guardian file-name | oss-pathname
+        #For Guardian processes, specify a Guardian file name. 
+        #For OSS object file name must be an absolute OSS pathname. Case is significant.
+        #Example: /usr/tandem/nssjava/bin/java
+        #Default: no default
+        file: /usr/tandem/nssjava/jdk180_l80/bin/java
+      #GUARDIAN-LIB
+      guardian_lib:
+        #node: specifies the name of NonStop node for the specified action
+        #This is an input and output field
+        #valid values: <system-name> | default | * (should be inside quotes and/or with backslash)
+        #<system-name> : specifies the name of the node on which the pathmon process resides. 
+        #A system name consists of one to seven alphanumeric characters.
+        #The first alphanumeric character must be a letter.
+        # default: The current node where the action is being executed
+        #Example: RHVNS2
+        #Default: default
+        node: default
+        #name: specifies the name of the user library object file that contains additional 
+        #server code space and procedures that can be shared among servers. 
+        #If you supply a value for this attribute, the operating system uses this file name and 
+        #the file named in the PROGRAM attribute to access the server code
+        #This is an input and output field
+        #valid value : <volume-name>.<subvolume-name>.<filename>
+        #<volume-name>    : specifies the name of the volume on which the file resides. 
+        #A volume name consists of a dollar sign ($) followed by one to 
+        #seven alphanumeric characters; the first alphanumeric character must be a letter.
+        #<subvolume-name> : specifies the name of the subvolume on which the file resides.
+        #A subvolume name has one to eight alphanumeric characters; the first character must be a letter.
+        #<filename>       : specifies the name of the file.
+        #A file name has one to eight alphanumeric characters; the first character must be a letter. 
+        #Example: $DATA.WORK.SRVLIB
+        #Default: null (This field is not considered)
+        name: null
+      #PROCESSTYPE
+      #process_type: specifies the type of servers in the server class.
+      #This is a mandatory input and output field                
+      #valid values: GUARDIAN | OSS
+      #GUARDIAN
+      #  All servers in this server class are Guardian processes.
+      #OSS
+      #  All servers in this server class are OSS processes.
+      #Example: GUARDIAN
+      #Default: OSS      
+      process_type: OSS
+      #oss: contains configuration parameters for OSS serverclass      
+      oss:
+        #ARGLIST
+        #args : specifies an Open System Services (OSS) startup argument list, 
+        #which is a list of strings that is made available to 
+        #OSS server processes in the argv[] array.
+        #each string or option should be comma separated, and each
+        #parameter or option or string is an index of arglist attribute
+        #This is a mandatory input and output field                    
+        #valid length : 2 to 24,000 characters
+        #Example: any application specific argument
+        #Default: no default (empty list - not considered)
+        arglist: [-Dserver.socket.port=5002, com.hpe.nsk.nsdevops.server.Server]
+        #CWD
+        #cwd: specifies the absolute OSS pathname of the current working directory of 
+        #an OSS server process.
+        #This value is used to resolve relative pathnames specified for 
+        #other OSS server process attributes in the server class. Case is significant.
+        #This is an input and output field                 
+        #valid values : oss path
+        #Example: /home/user1
+        #Default: default directory of user
+        #Default: null (This field is not considered)        
+        cwd: /home/production/app
+        #ENV
+        #env: specifies one or more OSS environment variables sent to 
+        #OSS server processes in the server class. 
+        #This is an input and output field                 
+        #valid length : 2 to 24,000 characters
+        env:
+          #List of environment variables as key pair value
+          #Sample environment variable key and value
+          #This string must be enclosed in quotation marks
+          #Default: null (This field is not considered)
+          CLASSPATH: ".:bankapp-1.0.jar"
+        #STDERR
+        #std_error: specifies the name of the OSS stderr (standard error) file to be
+        #used by the OSS servers in this server class. 
+        #This file is opened only for write operations.
+        #If the 'cwd' attribute is not specified then the OSS stderr file must be 
+        #an absolute OSS pathname. Case is significant
+        #If the file specified does not exist, it is created. Output is appended to
+        #the end of the file.                  
+        #This is an input and output field
+        #valid values : oss file name                 
+        #Example: /home/usr/errfile
+        #Default: null (This field is not considered)
+        std_error: /home/production/app/stderr
+        #STDIN
+        #std_in: specifies the name of the OSS stdin (standard input) file to be
+        #used by the OSS servers in this server class. 
+        #This file is opened only for read operations.
+        #If the 'cwd' attribute is not specified then the OSS stdin file must be 
+        #an absolute OSS pathname. Case is significant
+        #If the file specified does not exist, it is created.
+        #This is an input and output field
+        #valid values : oss file name                 
+        #Example: /home/usr/infile
+        #Default: null (This field is not considered)         
+        std_input: null
+        #STDOUT
+        #std_output: specifies the name of the OSS stdout (standard output) file to be
+        #used by the servers in this server class. This file is opened only for write operations.
+        #If the 'cwd' attribute is not specified then the OSS stdout file must be 
+        #an absolute OSS pathname. Case is significant.
+        #If the file specified does not exist, it is created. Output is appended
+        #to the end of the file.
+        #This is an input and output field                 
+        #valid values : oss file name                 
+        #Example: /home/usr/outfile
+        #Default: null (This field is not considered)        
+        std_output: /home/production/app/stdout
+        #UMASK
+        #umask: PATHMON process uses this attribute as a file mode creation mask while
+        #starting the server process. 
+        #The Octalnumber entry is a three digit octal number that specifies the default
+        #permissions for the owner, group, and others.
+        #This is an input and output field                 
+        #valid values : "<number>"
+        #<number> - The Octalnumber entry is a three digit octal number that specifies
+        #the default maximum permissions allowed for owner, group, and others.
+        #Example : "544"
+        #Default: default ( "000" )        
+        umask: default
+      #guardian: contains configuration parameters for Guardian serverclass      
+      guardian:
+        #ASSIGN
+        #assign: dictionary contains the list of assigns to be set for the serverclass
+        #This is an input and output field
+        assign:
+          #List of assigns 
+          #assign1: assigns a logical file name to a physical Guardian file and specifies attributes 
+          #of the file. The PATHMON process stores the values assigned by this attribute and 
+          #sends the values to the server process using an ASSIGN message when the server process is opened.
+          #The name to which a file name or file attributes are assigned.
+          #The assign name consists of 1 to 31 alphanumeric hyphen (-), or circumflex (^) characters.
+          #Example: assign1
+          #Default: assign1
+          assign1:
+            #actual_file: specifies the name of the actual physical file. A partial file name 
+            #is not expanded; however, the application process can expand the file name using the 
+            #default information passed in the startup message.
+            actual_file:
+              #node: specifies the name of NonStop node for the specified action
+              #This is an input and output field
+              #valid values: <system-name> | default | * (should be inside quotes and/or with backslash)
+              #<system-name> : specifies the name of the node on which the pathmon process resides. 
+              #A system name consists of one to seven alphanumeric characters.
+              #The first alphanumeric character must be a letter.
+              # default: The current node where the action is being executed
+              #Example: RHVNS2
+              #Default: default
+              node: default
+              #name: specifies the name of the actual physical file. A partial file name 
+              #is not expanded; however, the application process can expand the file name using the 
+              #default information passed in the startup message.
+              #valid value : <volume-name>.<subvolume-name>.<filename>
+              #<volume-name>    : specifies the name of the volume on which the file resides. 
+              #A volume name consists of a dollar sign ($) followed by one to 
+              #seven alphanumeric characters; the first alphanumeric character must be a letter.
+              #<subvolume-name> : specifies the name of the subvolume on which the file resides.
+              #A subvolume name has one to eight alphanumeric characters; the first character must be a letter.
+              #<filename>       : specifies the name of file.
+              #A file name has one to eight alphanumeric characters; the first character must be a letter.              
+              #Example: assign1
+              #Default: null (This field is not considered)
+              name: null
+            #create_open_spec: is a file-creation or file-open specification that sets certain 
+            #file attributes.
+            create_open_spec:
+              #file_extent_spec: is the size of the file extents allocated to the file
+              file_extent_spec:
+                #primary_extent: is the size of the primary file extent to be allocated to the file.
+                #It is an integer in the range from 1 through 65535
+                #Example: 48
+                #Default: 0 (not assigned)                  
+                primary_extent: 0
+                #secondary_extent: is the size of the secondary extents, allocated to the file after 
+                #the primary extent is allocated. 
+                #It is an integer in the range from 1 through 65535
+                #Example: 48
+                #Default: 0(not assigned)    
+                secondary_extent: 0
+              #exclusion_spec: is the exclusion mode for logical-unit. It determines 
+              #the circumstances under which other processes can access the file
+              #valid values: EXCLUSIVE | SHARED | PROTECTED | null
+              #Example: EXCLUSIVE
+              #Default: null (This field is not considered)   
+              exclusion_spec: null
+              #access_spec: is the access mode for logical-unit. It specifies the file operations that can be performed
+              #valid values: I-O | INPUT | OUTPUT | null
+              #Example: INPUT
+              #Default: null (This field is not considered)                 
+              access_spec: null
+              #file_code: assigns a file code to logical-unit. Specify file-code as an integer in the
+              #range from 0 through 65535
+              #Example: 101
+              #Default: -1 (not assigned)                     
+              file_code: -1
+              #file_record_size: sets the length of records in logical-unit. Specify record-size as an integer
+              #in the range from 1 through 4072
+              #Example: 24
+              #Default: 0 (not assigned)                   
+              file_record_size: 0
+              #file_block_size: sets the size of the data blocks used by logical-unit. Specify block-size as
+              #an integer in the range from 1 through 4096
+              #Example: 24
+              #Default: 0 (not assigned)                 
+              file_block_size: 0
+        #IN
+        #in_file: specifies the name of the input file in the startup message
+        in_file:
+          #node: specifies the name of NonStop node for the specified action
+          #This is an input and output field
+          #valid values: <system-name> | default | * (should be inside quotes and/or with backslash)
+          #<system-name> : specifies the name of the node on which the pathmon process resides. 
+          #A system name consists of one to seven alphanumeric characters.
+          #The first alphanumeric character must be a letter.
+          # default: The current node where the action is being executed
+          #Example: RHVNS2
+          #Default: default
+          node: default
+          #name: specifies the name of the input file in the startup message
+          #This is an input and output field               
+          #valid values are : <in-file-name>
+          #<in-file-name>   : [<volume-name>.<subvolume-name>.]<filename>
+          #<volume-name>    : specifies the name of the volume on which the input file resides. 
+          #A volume name consists of a dollar sign ($) followed by one to 
+          #seven alphanumeric characters; the first alphanumeric character must be a letter.
+          #<subvolume-name> : specifies the name of the subvolume on which the file resides.
+          #A subvolume name has one to eight alphanumeric characters; the first character must be a letter.
+          #<filename>       : specifies the name of input file.
+          #A file name has one to eight alphanumeric characters; the first character must be a letter.
+          #Example : $system.pathway.infile 
+          #Default: null (This field is not considered)
+          name: null        
+        #OUT
+        #out_file: specifies the name of the OUT file in the startup message
+        out_file:
+          #node: specifies the name of NonStop node for the specified action
+          #This is an input and output field
+          #valid values: <system-name> | default | * (should be inside quotes and/or with backslash)
+          #<system-name> : specifies the name of the node on which the pathmon process resides. 
+          #A system name consists of one to seven alphanumeric characters.
+          #The first alphanumeric character must be a letter.
+          # default: The current node where the action is being executed
+          #Example: RHVNS2
+          #Default: default
+          node: default
+          #name: specifies the name of the OUT file in the startup message
+          #This is an input and output field               
+          #valid values are : <out-file-name>
+          #<out-file-name>  : [<volume-name>.<subvolume-name>.]<filename>
+          #<volume-name>    : specifies the name of the volume on which the output file resides. 
+          #A volume name consists of a dollar sign ($) followed by one to 
+          #seven alphanumeric characters; the first alphanumeric character must be a letter.
+          #<subvolume-name> : specifies the name of the subvolume on which the file resides.
+          #A subvolume name has one to eight alphanumeric characters; the first character must be a letter.
+          #<filename>       : specifies the name of output file.
+          #A file name has one to eight alphanumeric characters; the first character must be a letter.
+          #Example : $system.pathway.outfile 
+          #Default: null (This field is not considered)
+          name: null
+        #PARAM
+        #param: dictionary contains the list of params to be set for serverclass
+        param:
+          #contains the list of parameter name and value
+          #<param-name>: specifies the name to which you assign parameter-value. The name must begin with an alphabetic character.
+          #<param-value>: specifies a character string value that you assign to parameter-name. 
+          #This string must be enclosed in quotation marks if you include blanks, commas, or quotation marks in the value. 
+          #Embedded quotation marks must be doubled
+          #Sample param with param-name and param-value
+          #This string must be enclosed in quotation marks
+          #Default: null (This field is not considered)
+          param1: null
+          #Sample param with param-name and param-value
+          #This string must be enclosed in quotation marks
+          #Default: null (This field is not considered)         
+          param2: null
+        #STARTUP
+        #startup_msg: specifies the character string that is sent to a Guardian server process in the startup message.
+        #Leading blanks are ignored. If you want embedded blanks to be read as part of the startup string, 
+        #enclose string in quotation marks. If the string includes quotation marks, they must be doubled.
+        #This is a mandatory input and output field
+        #Default: null (This field is not considered)
+        startup_msg: null
+      #AUTORESTART
+      #auto_restart: specifies the number of times that the PATHMON process 
+      #attempts to restart a server process within a fixed 10-minute interval 
+      #after an abnormal termination.
+      #This is an input and output field               
+      #valid values : 0 to 32,767. 
+      #Example : 100
+      #Default : 10        
+      auto_restart: 10
+      #CPUS
+      #cpus : contains the cpu numbers where the servers to be started      
+      cpus:
+        #primary:
+        #primary: speicifies the list of cpu number where the primary server processes
+        #to be started.
+        #This is an input and output field               
+        #valid values : 0 to 15. 
+        #Example : [1,2,3]
+        #Default : [] (not assigned)    
+        primary: [0]
+        #backup: processor numbers for backup CPUs
+        #If a primary processor is down, the PATHMON process exchanges the 
+        #roles of the primary and backup CPUs 
+        #This is an input and output field               
+        #valid values : 0 to 15. 
+        #Example : [1,2,3]
+        #Default : [] (not assigned)        
+        backup: [1]
+        #weights: is the weight defined for the CPU. 
+        #It is used to create a new process.
+        #The processes are created on a CPU such that the percentage of processes
+        #running on a CPU to the total number of processes on all CPUs is
+        #almost equal to the defined weights. 
+        #NOTE: backup CPU cannot be specified when using CPU weights.
+        #Valid Range : 1 through 100.
+        #The sum of all CPU weights must be 100.
+        #This is an input and output field 
+        #Example : [20,50,30]
+        #Default : [] (not assigned)          
+        weights: []
+      #CREATEDELAY
+      #create_delay: specifies the maximum amount of time a link manager (ACS process)
+      #waits to use an established link to a server class before requesting a new link
+      #from the PATHMON process that controls the server class.
+      #Valid Range : 
+      #          0 through 16,383 CSECS
+      #          0 through 16,383 SECS 
+      #          0 through 1092 MINS
+      #          0 through 18 HRS          
+      create_delay:
+        #interval : specifies the create delay interval
+        #This is an input and output field
+        #valid values : 0 to 16383 | -1                
+        #Example : 10
+        #Default : -1 ( 1 MIN )       
+        interval: -1
+        #unit : specifies the unit for create delay
+        #This is an input and output field                
+        #valid value : { HRS | MINS | SECS | CSECS | default}
+        #Example : HRS
+        #Default : default ( MINS )
+        unit: default
+      #DELETEDELAY
+      #delete_delay: specifies the maximum amount of time a link between a link manager
+      #that is ACS subsystem processes or TCP, and a dynamic server process in a server
+      #class can remain idle before the link manager automatically returns 
+      #the link to the dynamic server.
+      #Valid Range : 
+      #          0 through 16,383 CSECS
+      #          0 through 16,383 SECS 
+      #          0 through 1092 MINS
+      #          0 through 18 HRS        
+      delete_delay:
+        #interval : specifies the delete delay interval
+        #This is an input and output field                
+        #valid values : 0 to 16383 | -1        
+        #Example : 100
+        #Default : -1 ( 10 MINS )
+        interval: -1
+        #unit : specifies the unit for delete delay
+        #This is an input and output field                
+        #valid value : { HRS | MINS | SECS | CSECS }
+        #Example : HRS
+        #Default : default ( MINS )         
+        unit: default
+      #TIMEOUT
+      #timeout: specifies the timeout value that a link manager such as a ACS subsystem
+      #process or TCP uses for the I/O operation to the server process.
+      #Valid Range : 
+      #          0 through 16,383 SECS 
+      #          0 through 1092 MINS
+      #          0 through 18 HRS           
+      timeout:
+        #interval : specifies the timeout
+        #This is an input and output field                
+        #valid values : 0 to 16383 | -1                
+        #Example : 100
+        #Default : -1 (waits indefinitely for the server I/O operation to complete)      
+        interval: -1
+        #unit : specifies the unit for timeout interval
+        #This field is not considered when timeout interval is set as -1 
+        #This is an input and output field                
+        #valid value : { HRS | MINS | SECS | CSECS }
+        #Example : HRS
+        #Default : MINS         
+        unit: MINS
+      #DEFINE
+      #define: dictionary contains the list of defines to be set for serverclass 
+      #This is an input and output field
+      define:
+        #List of defines specified as dictionary for each define class      
+        #This attribute assigns a DEFINE definition as part of a server class definition. 
+        #When a server process in the server class is created, the specified DEFINEs are
+        #included in the process context.
+        #define1: specifies a valid name to be assigned to the DEFINE. A DEFINE name can
+        #be from 2 through 23 characters in length. 
+        #The first character must be a letter.The name can contain alphanumeric characters, 
+        #hyphens (-), underscores (_), and circumflexes (^).
+        #Sample define name and value    
+        #List of defines specified as dictionary for each CATACLOG class
+        #define1 : define name
+        TCPIP^PROCESS^NAME:
+         class: MAP
+         file:
+           name: $ZTC0
+           node: default     
+        PTCPIP^FILTER^KEY:
+           class: MAP
+           file:
+            name: RRKEY
+            node: default
+        PTCPIP^FILTER^TCP^PORTS:
+           class: MAP
+           file:
+             name: $SYSTEM.P10.P64000
+             node: default                
+      #HIGHPIN
+      #high_pin: specifies whether the server process runs at a high PIN or a low PIN
+      #This is an input and output field
+      #valid values : ON | OFF | default
+      #Example: ON
+      #Default: default ( OFF )
+      high_pin: default
+      #tmf
+      #tmf: specifies whether servers in this server class can lock and update 
+      #data files audited by the TMF subsystem.
+      #valid values : ON | OFF | default  
+      #This is an input and output field      
+      #Example: ON
+      #Default: default ( OFF )   
+      tmf: default 
+      #HOMETERM 
+      home_term:
+        #node: specifies the name of NonStop node for the specified action
+        #This is an input and output field
+        #valid values: <system-name> | default | * (should be inside quotes and/or with backslash)
+        #<system-name> : specifies the name of the node on which the pathmon process resides. 
+        #A system name consists of one to seven alphanumeric characters.
+        #The first alphanumeric character must be a letter.
+        # default: The current node where the action is being executed
+        #Example: RHVNS2
+        #Default: default
+        node: default
+        #device: specifies the name of the home terminal for servers in the server class.
+        #This is an input and output field
+        #Example: $zhome             
+        #Default: default (the default is the home terminal of the PATHMON process.)
+        device: default
+      #LINKALGORITHM
+      #link_algorithm: specifies the value of the algorithm which PATHMON process uses to
+      #select link grant algorithm for granting link
+      #This is an input and output field             
+      #valid values: REQUESTERCPU | DEFAULT
+      #For REQUESTERCPU:
+      #       The link grant algorithm gives preference to static server processes
+      #       running on the CPU or configured with the CPU same as that of the
+      #       requester.
+      #For DEFAULT:
+      #       The link grant algorithm gives preference to static server
+      #       processes running on any CPU.
+      #Example: REQUESTERCPU
+      #Default: DEFAULT
+      link_algorithm: DEFAULT
+      #MAXLINKS
+      #max_links: specifies the maximum number of concurrent links permitted between 
+      #all ACS subsystem processes and a server in a server class.
+      #This is a mandatory input and output field
+      #valid values: 0 to 4095 | -1
+      # -1 :  Unlimited links to the server process
+      #Example: 100
+      #Default: 100
+      max_links: 100
+      #LINKDEPTH
+      #link_depth: specifies the maximum number of concurrent links that any one link
+      #manager that is the ACS subsystem processes can have to a given server process
+      #before the PATHMON process directs that link manager's link requests to another
+      #server within the server class.
+      #This is a mandatory input and output field
+      #valid values: 1 to 255
+      #This value must not exceed the value of max_links
+      #Example: 100
+      #Default: 25
+      link_depth: 25
+      #MAXSERVERS
+      #max_servers: specifies the maximum number of server processes in this server class
+      #that can run at the sametime.
+      #This is a mandatory input and output field     
+      #valid values: 0 to 4095
+      #Example: 100
+      #Default: 10
+      max_servers: 10
+      #NUMSTATIC
+      #num_static: specifies the maximum number of static servers within this server class
+      #This is a mandatory input and output field   
+      #valid values: 0 to 4095
+      #Example: 100
+      #Default: 10
+      num_static: 10
+      #OWNER
+      #owner: specifies the user ID that controls access from a Pathsend process to a
+      owner:
+        #node: specifies the name of NonStop node for the specified action
+        #This is an input and output field
+        #valid values: <system-name> | default | * (should be inside quotes and/or with backslash)
+        #<system-name> : specifies the name of the node on which the pathmon process resides. 
+        #A system name consists of one to seven alphanumeric characters.
+        #The first alphanumeric character must be a letter.
+        # default: The node where the pathmon process is configured
+        #Example: RHVNS2
+        #Default: default
+        node: default
+        #id: specifies the user ID that controls access from a Pathsend process to a
+        #serverclass. Use this attribute in conjunction with the security attribute
+        #This is an input and output field
+        #valid values: group-number, user-number | 
+        #              group-name.user-name
+        #Example: 200,200
+        #Default: default (Owner of the PATHMON process)
+        id: default
+      #SECURITY
+      #security: specifies the users, in relation to the OWNER attribute, who can access a 
+      #server class from a Pathsend requestor.
+      #The security attributes are the same as the Guardian file security attributes. 
+      #The possible values are: A , G , O , N, C , U , -
+      #This is an input and output field         
+      #valid values: "A" (Any local user) | 
+      #              "G" (A group member or owner) | 
+      #              "O" (Owner only) |
+      #              "N" (Any network user) | 
+      #              "C" (Anymember of owner's community (local or remote user having same group ID as owner)) |
+      #              "U" (Any member of owner's user class (local or remote user having same group ID and userID as owner)) | 
+      #              "-" (Local super ID) | default
+      # This value should be mentioned in double quotes
+      #Example : "G"
+      #Default: default ( "N" )     
+      security: default
+      #volume_spec: default volume
+      #For GUARDIAN processes, 
+      #      specifies the server class default volume and subvolume names to
+      #      be passed to the server process in the startup message. 
+      #For OSS processes, 
+      #      specifies the server class default Guardian volume and subvolume      
+      volume:
+        #node: specifies the name of NonStop node for the specified action
+        #This is an input and output field
+        #valid values: <system-name> | default | * (should be inside quotes and/or with backslash)
+        #<system-name> : specifies the name of the node on which the pathmon process resides. 
+        #A system name consists of one to seven alphanumeric characters.
+        #The first alphanumeric character must be a letter.
+        # default: The current node where the action is being executed
+        #Example: RHVNS2
+        #Default: default
+        node: default
+        #spec: default volume
+        #For GUARDIAN processes, 
+        #      specifies the server class default volume and subvolume names to
+        #      be passed to the server process in the startup message. 
+        #For OSS processes, 
+        #      specifies the server class default Guardian volume and subvolume       
+        #This is an input and output field                
+        #valid values are : <volume-name>.<subvolume-name>
+        #<volume-name>    : specifies the name of the volume. 
+        #A volume name consists of a dollar sign ($) followed by one to 
+        #seven alphanumeric characters; the first alphanumeric character must be a letter.
+        #<subvolume-name> : specifies the name of the subvolume.
+        #A subvolume name has one to eight alphanumeric characters. The first character must be a letter.      
+        #Example : $system.system
+        #Default: default ( <user-default-volume>.<user-default-subvolume>)
+        spec: default
+      #priority
+      #priority: specifies the priority at which the servers of this server class run.
+      #This is an input and output field                
+      #valid values: 1 to 199 | -1
+      #Example: 100
+      #Default: -1 (10 less than the priority of the PATHMON process priority)      
+      priority: -1
+      #process: contains process attributes
+      #Default: No default      
+      process:
+        #specifies the name of a server process within the server class.
+        #This is an input and output field                      
+        #valid values : <process-name> 
+        #<process-name>: can be a maximum of six characters beginning with a 
+        #dollar sign ($) and followed by 1 to 5 alphanumeric characters.
+        #The first character must be a letter. A secondary qualifier for 
+        #the process name is allowed.The secondary qualifier can be a 
+        #maximum of 8 characters beginning with a '#' (pound sign) and 
+        #followed by one to seven alphanumeric characters. 
+        #The first character must be a letter.
+        #Example: $proc1
+        #Default: no default
+        proc1:
+          #status: contains the status of the server process
+          #valid values : RUNNING, PENDING, STOPPED
+          #This is an output field
+          status: /no/default
+          #ASSOCIATIVE
+          #associative: specifies whether the PATHMON process in this Pathway 
+          #environment grants links to a server process that already exists in
+          #another Pathway environment.
+          #This is an input and output field
+          #valid values : ON | OFF | default
+          #Example: ON
+          #Default: default ( OFF )   
+          associative: default 
+          #CPUS
+          #cpus : contains the cpu numbers where this server to be started          
+          cpus:
+            #primary: speicifies the list of cpu number where the 
+            #primary server  processes to be started.
+            #This is an input and output field 
+            #Note: If backup CPU is specified then the primary CPU need not to  
+            #be specified as multiple.
+            #valid values : -1 | 0 to 15. 
+            #Example : 0
+            #Default : -1 ( CPU selected by pathmon)          
+            primary: -1
+            #backup: processor numbers for backup CPUs
+            #If a primary processor is down, the PATHMON process exchanges the 
+            #roles of the primary and backup CPUs 
+            #Note : primary is mandatory for backup to be mentioned.
+            #This is an input and output field         
+            #valid values : -1 | 0 to 15.
+            #Example : 0
+            #Default : -1 (No Backup CPU)              
+            backup: -1
+          #HOMETERM
+          #home_term: specifies the name of the home terminal for servers            
+          home_term:
+            #node: specifies the name of NonStop node for the specified action
+            #This is an input and output field
+            #valid values: <system-name> | default | * (should be inside quotes and/or with backslash)
+            #<system-name> : specifies the name of the node on which the pathmon process resides. 
+            #A system name consists of one to seven alphanumeric characters.
+            #The first alphanumeric character must be a letter.
+            # default: The current node where the action is being executed
+            #Example: RHVNS2
+            #Default: default
+            node: default
+            #device: specifies the name of the home terminal for servers
+            #in the server class.
+            #This is an input and output field
+            #Example: 
+            #Default: default (the default is the home terminal of the PATHMON process.)
+            device: default
+          #priority: specifies the priority at which the servers of this 
+          #serverclass run.
+          #This is an input and output field
+          #valid values: -1 | 1 to 199
+          #Example: 100
+          #Default: -1(10 less than the priority of the PATHMON process priority)          
+          priority: -1

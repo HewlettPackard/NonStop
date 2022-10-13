@@ -1,0 +1,6 @@
+---
+user: "{{role}}"
+dest: "/home/{{role}}/app/"
+appfile: bankapp-1.0.jar
+
+ 

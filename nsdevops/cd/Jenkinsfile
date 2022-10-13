@@ -1,0 +1,108 @@
+node('master') {
+    ansiColor('xterm')  {
+    def remote = [:]
+    remote.credentialsId = '<credentialsId>'
+    remote.name = 'dev'
+    git credentialsId: '<credentialsId>', url: 'git@github.<your company name>.com:<repository name>/NSDevOpsQuickStart.git'      
+    stage('Deliver and Deploy in DEV Environment') {
+        sshagent (credentials: ['remote']) {             
+    
+        ansiblePlaybook(
+                             playbook: 'bankapp.yml',
+                             inventory: 'inventory/dev/hosts',
+                             credentialsId: '<credentialsId>',
+                             hostKeyChecking: false,
+                             extras: '-e sc_name=scdev -e pathmon_name=\$dev -e role=dev -v',
+                             vaultCredentialsId: '<vaultCredentialsId>',
+                             ) 
+        }
+                             }
+              }
+}
+
+node('cfot') {
+
+   def remote = [:]
+   remote.name = 'cfot'
+   remote.host = 'XX.YYY.ZZ.AAA'
+   remote.user = '<user name>'
+   remote.password = 'XXXXX'
+   remote.allowAnyHosts = true
+   stage('Unit Tests') {  
+    
+    sshCommand remote: remote, command: "cd /home/dev/app; export JAVA_HOME=/usr/tandem/nssjava/jdk180_l80;/usr/tandem/nssjava/jdk180_l80/bin/java -classpath .:bankapp-1.0.jar -Dserver.socket.port=5000 com.hpe.nsk.nsdevops.client.Client"
+    echo "Unit Tests are completed"
+   }
+}
+
+node ('master') {
+   stage('Promote to Stage'){
+    artifactPromotion artifactId: 'bankapp', debug: false, groupId: 'com.hpe.nsk.nsdevops', extension: 'pom', promoterClass: 'org.jenkinsci.plugins.artifactpromotion.NexusOSSPromotor', releasePW: 'XXXXX', releaseRepository: 'http://XX.YYY.ZZ.AAA:<Port_No>/repository/maven-releases/', releaseUser: 'qa', stagingPW: 'XXXXX', stagingRepository: 'http://XX.YYY.ZZ.AAA/repository/maven-releases/', stagingUser: 'dev', version: '1.0'
+    }
+    echo 'Application is successfully promoted to staging'
+}
+node ('master') {
+    ansiColor('xterm')  {
+    
+    def remote = [:]
+    remote.credentialsId = '<credentialsId>'
+    remote.name = 'qa'
+    
+    git credentialsId: '<credentialsId>', url: ' git@github.<your company name>.com:<repository name>/NSDevOpsQuickStart.git '
+    stage('Deliver and Deploy in QA Environment') {
+        sshagent (credentials: ['remote']) {    
+        ansiblePlaybook(
+                             playbook: 'bankapp.yml',
+                             inventory: 'inventory/qa/hosts',
+                             credentialsId: '<credentialsId>',
+                             hostKeyChecking: false,
+                             extras: '-e sc_name=scqa -e pathmon_name=\$qa -e role=qa -v',
+                             vaultCredentialsId: '<vaultCredentialsId>'
+							 
+                             ) 
+                             }
+              }
+	}
+}
+node ('cfot') {
+   def remote = [:]
+   remote.name = 'cfot'
+   remote.host = 'XX.YYY.ZZ.AAA'
+   remote.user = '<user name>'
+   remote.password = 'XXXXX'
+   remote.allowAnyHosts = true
+   stage('QA Tests') {  
+ sshCommand remote: remote, command: "cd /home/qa/app; export JAVA_HOME=/usr/tandem/nssjava/jdk180_l80;/usr/tandem/nssjava/jdk180_l80/bin/java -classpath .:bankapp-1.0.jar -Dserver.socket.port=5001 com.hpe.nsk.nsdevops.client.Client"
+    echo "QA Tests are completed"
+   }   
+}
+node ('master') {
+   stage('Promote to Production'){
+    artifactPromotion artifactId: 'bankapp', debug: false, groupId: 'com.hpe.nsk.nsdevops', extension: 'pom', promoterClass: 'org.jenkinsci.plugins.artifactpromotion.NexusOSSPromotor', releasePW: 'XXXXX', releaseRepository: ' http://XX.YYY.ZZ.AAA:<Port_No>/repository/maven-releases/', releaseUser: 'qa', stagingPW: 'XXXXX', stagingRepository: ' http://XX.YYY.ZZ.AAA:<Port_No>/repository/maven-releases/', stagingUser: 'dev', version: '1.0'
+    }
+    echo 'Application is successfully promoted to production'
+}
+
+node ('master'){
+    ansiColor('xterm')  {    
+    def remote = [:]
+    remote.credentialsId = '<credentialsId>'
+    remote.name = 'production'    
+    
+    git credentialsId: '<credentialsId>', url: ' git@github.<your company name>.com:<repository name>/NSDevOpsQuickStart.git '       
+    
+    stage('Deliver and Deploy in Production Environment') {
+                             sshagent (credentials: ['remote']) {    
+        ansiblePlaybook(
+                             playbook: 'bankapp.yml',
+                             inventory: 'inventory/production/hosts',
+                             credentialsId: '<credentialsId>',
+                             hostKeyChecking: false,
+                             extras: '-e role=production -e pathmon_name=\$prod -e sc_name=scprod -v',
+                             vaultCredentialsId: '<vaultCredentialsId>'
+							 
+                             ) 
+                             }
+              }
+	}
+}
