@@ -15,5 +15,5 @@ This package acts as a starter kit for users.
 ## Contents 
 This repository contains ansible playbook and configuration files for creating a run time environment for applications on the Nonstop Server.
 
-##System Requirements & Required Software 
+## System Requirements & Required Software 
 Refer to the HPE Nonstop Server-Modern DevOps-Instructions-for-CI-CD-Setup Documnet_v1.1.pdf for details 
