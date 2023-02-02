@@ -1,9 +1,18 @@
 # NSDevOps Starter Kits 
-The starter kits  demonstrate DevOps for Nonstop for various language profiles supported by NonStop.
-They provide DevOps pipelines that can be used to demonstrate the DevOps tool chains for the various languages supported by NonStop. 
+The starter kits  demonstrate DevOpsfor various language profiles supported by HPE NonStop.
+They provide Continuous Integration (CI) & Continuous Deployment (CD)  DevOps pipelines that can be used to demonstrate the DevOps tool chains for the various languages supported by NonStop. 
 The pipelines can used as a reference for your own project. 
 
 ## Contents 
+
+The following are the starter kits available 
+| Name                  | Description                                                                    | Folder  |
+|-----------------------|--------------------------------------------------------------------------------|---------|
+| Java Starter Kit      | CI sample for Java based applications built off-platform                       | java    |
+| Java JNI Starter Kit  | CI sample for polygot Java and C applications built on-platform on NonStop     | javajni |
+| Pyton Starter Kit     | CI sample for Pythons based applications                                       | python  |
+| CD Starter Kit        | Continuous Deployment using NonStop Manageability Framework (NSMF) and Ansible | cd      |
+
 Each starter kit comprises of 
 1. A sample application (typically language specific client-server application)
 2. A set of pipeline scripts 
