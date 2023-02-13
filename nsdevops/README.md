@@ -1,45 +1,30 @@
-# NSDevOps Starter Kits 
-The starter kits  demonstrate DevOpsfor various language profiles supported by HPE NonStop.
-They provide Continuous Integration (CI) & Continuous Deployment (CD)  DevOps pipelines that can be used to demonstrate the DevOps tool chains for the various languages supported by NonStop. 
-The pipelines can used as a reference for your own project. 
+# NSDevOps Java Starter Kit
+This package is designed to demonstrate the Continuous Integration of a  Purely Platform Agnostic Application profile of NonStop DevOps through a javaquickstart application. 
+The Pre-requisite setup, tooling, gating criteria and artifacts like the JenkinsFile can be used to automate the Continuous Integration Phase of any Java Project.  This package acts as a starter kit for users. 
 
 ## Contents 
+The package contains a java net client application, a server application JenkinsFile that can be used to automate the Continuous Integration Workflow and this JavaStarterKitUsageInstruction.docx file that provides instructions to use the javaquickstart application. 
 
-The following are the starter kits available 
-| Name                  | Description                                                                    | Folder  |
-|-----------------------|--------------------------------------------------------------------------------|---------|
-| Java Starter Kit      | CI sample for Java based applications built off-platform                       | java    |
-| Java JNI Starter Kit  | CI sample for polygot Java and C applications built on-platform on NonStop     | javajni |
-| Pyton Starter Kit     | CI sample for Pythons based applications                                       | python  |
-| CD Starter Kit        | Continuous Deployment using NonStop Manageability Framework (NSMF) and Ansible | cd      |
+###Client Application
+The Client application (JavaHelloClient) is a sample Java Client application used to demonstrate Continuous Integration. The application that uses the java.net package. 
+The application takes two inputs <IPAddress> of the server to connect to and the <PortNumber> on which the server is listening at. 
+The client can be run on-platform (NonStop) or off-platform(windows). 	
 
-Each starter kit comprises of 
-1. A sample application (typically language specific client-server application)
-2. A set of pipeline scripts 
-3. A README file the describes the steps to setup the DevOps Tools chain, pipelines and how to use the start kit 
+###Server Application
+The Server application (JavaHelloServer) is a sample Java Server application to demonstrate Continuous Integration. The Server application waits for requests from client application. Once a connection request is made by the client, the server connects to the client and exchanges greeting message.  The Server application takes two inputs, namely the <HostName> and the <PortNumber> on which the server will listen. The server can be run on-platform (NonStop) for this demo. It can be run as an OSS process or in Pathway Environment.
 
-## System Requirements 
-Most of the samples of in the NSDevOps Starter Kits is based on the Centralized Jenkins Setup. 
-![image](https://media.github.hpe.com/user/32719/files/2d1aa43a-b144-4d13-b7dd-137ad0d6f213)
+##System Requirements 
+Refer to the HPE Nonstop Server-Modern DevOps-Instructions-for-CI-CD-Setup Documnet_v1.1.pdf for details 
 
+##Required Software  
+Jenkins	 			2.222.3 or later
+GITHub	 			2.26.2-64-bit or later
+Java	       			JDK 1.8.0_181 or later version of JDK 8. 
+Maven	Standard 			6.3 or later 
+SonarQube				8.3.0.xx or later 
+Junit					1.5.1 (included in the package)
+Nexus Repository Manager	3.17.0.01 or later
 
-Hence the following are the system requirement 
-1.Developer PC - A Windows/Linux PC that is the developer PC hosting the development tools such as NSDEE and GIT
-2.Jenkins Master Node - A Windos/Linux Machine that hosts the Jenkins, SCM, SAST & DAST tools, Artifact Repository and NonStop cross-compilers
-3.NonStop Node - A NonStop Machine that is mapped as node in Jenkins on which the Jenkins agent will run. 
-SSH access is required to the NonStop node from the centralized Jenkins Master Node. 
+#Usage Instructions 
+Refer to JavaStarterKitUsageInstructions.docx for details of usage with Jenkins, AWSCodeBuid & AzureDevOps
 
-## Using the Starter Kits 
-**Following are the steps to use the starter-kits **
-1. Clone to repository to your PC. 
-2. Setup the DevOps Environment following the steps given in the README file 
-4. Update the Application/Test Suite IP addresses as per your setup 
-5. Update the place holders in the pipeline scripts with values in accordance with your setup
-6. Upload to the your GIT Repository and trigger the pipeline 
-
-**Following are the steps to re-use the pipeline scripts for your application **
-1. Update the pipeline scripts to point to the GIT Repository of your application 
-2. Update the scripts to setup the environment (build, test and dependencies) in accordance to your application 
-3. Update the scripts copy your application and its testware, and deploy your application on NonStop
-4. Upload the updated script to Jenkins 
-5. Trigger the pipeline script to build, test and deploy your application 
