@@ -1,0 +1,15 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo Build started on `date`
+      - mvn test
+      - mvn checkstyle:checkstyle
+  post_build:
+    commands:
+      - mvn package
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - target/javahelloserver-1.0.0-SNAPSHOT.jar
