@@ -12,5 +12,6 @@ Refer to the HPE Nonstop Server-Modern DevOps-Instructions-for-CI-CD-Setup Docum
 Software DescriptionVersion JenkinsBuild Management System2.222.3 or laterGitHubSource Code ControlGITSource Code Control2.26.2-64-bit or laterPythonPython is an interpreted high-level general-purpose programming language. Python 2.7.18 or later versionSonarQubeStatic Analysis Tools8.3.0.xx or later Unit test or pytestUnit Testing or Pytest FrameworkIncluded in the python package (pip install pytest)
 
 #Usage Instructions 
-Refer to PythonStarterKitUsageInstruction.docx for details
+Refer to PythonStarterKitUsageInstruction.docx for details of usage with Jenkins, AWSCodeBuild and AzureDevOps
+
 

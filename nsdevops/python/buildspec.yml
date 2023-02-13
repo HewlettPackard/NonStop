@@ -1,0 +1,32 @@
+version: 0.2
+
+#env:
+  #variables:
+     # key: "There are no variables"
+  #parameter-store:
+     # key: "There are no variables"
+
+phases:
+  install:
+    runtime-versions:
+       python: 3.7
+  pre_build:
+    commands:
+      - pip install bandit
+      - pip install pylint
+  build:
+    commands:
+      - echo "Static Analysis" 
+      - bandit -v -lll client/socketClient.py
+      - bandit -v -lll server/socketServer.py
+      - pylint --exit-zero --output-format=colorized client/socketClient.py
+      - pylint --exit-zero --output-format=colorized server/socketServer.py
+  post_build:
+    commands:
+      - echo Build completed on `date`
+#artifacts:
+  #files:
+    # No artifacts for this starter kit
+  #name: $(date +%Y-%m-%d)
+  #discard-paths: yes
+  #base-directory: location
