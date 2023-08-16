@@ -1,0 +1,63 @@
+export COMP_ROOT=C:\\PROGRA~2\HPENON~2\L22.09
+CC=$(COMP_ROOT)\\usr\\bin\\c89.exe
+ELD=$(COMP_ROOT)\\usr\\bin\\xld.exe
+C99=$(COMP_ROOT)\\usr\\bin\\c99.exe
+
+CFLAGS= -g -Wallow_cplusplus_comments -Wextensions -D_XOPEN_SOURCE_EXTENDED=1 \
+	  -Wnowarn=141,209 -D_PUT_MODEL_ \
+      -Wcall_shared -Wsystype=oss -Wtarget=tns/x
+
+LDFLAGS = -set floattype IEEE_float -set SYSTYPE OSS -set HIGHPIN ON \
+          -set CPlusPlusDialect neutral -dll \
+	   -L Pthreads -lxputdll\ \
+          -lcre -lcrtl -export_all
+
+C64FLAGS= -g -Wallow_cplusplus_comments -Wlp64 \
+        -Wextensions -D_XOPEN_SOURCE_EXTENDED=1 -Wnowarn=141,209  -D_PUT_MODEL_ \
+        -Wcall_shared -Wsystype=oss -Wtarget=tns/x
+
+LD64FLAGS = -set data_model lp64 -set floattype IEEE_float -set SYSTYPE OSS -set HIGHPIN ON \
+          -set CPlusPlusDialect neutral -dll \
+          -L Pthreads -lxputdll\
+          -lcre -lcrtl -export_all \
+          
+RM= /bin/rm -f
+
+ALL = quickstart
+
+.SUFFIXES:  .c .o
+
+all: $(ALL)
+
+clean:
+	@$(RM) *.o *.exe *.out
+
+helloC.o: helloC.c
+	$(CC) $(CFLAGS) -WIEEE_float   helloC.c -o helloC.exe
+
+
+
+helloC.exe: helloC.o
+	@echo "-------------------------------------"
+	@echo "Generating helloC.exe file  
+	@echo "-------------------------------------"
+	$(ELD) helloC.o  -o helloC.exe $(LDFLAGS)
+
+C_test: helloCTest.cpp
+	@echo "-------------------------------------------------------------"
+	@echo "Compiling helloCTest.cpp Program with Boost Framework" 
+	@echo "-------------------------------------------------------------"
+	
+	$(C99)  -I/usr/boost_1_56 -g -O1 -Wsystype=oss -Wboost -Wcall_shared -c -L/usr/boost_1_56/libv3 -lboostx_unit_test_framework -llibboostx_prg_exec_monitor.a helloCTest.cpp 
+	@echo "-------------------------------------------------------------"
+	$(C99)  -I/usr/boost_1_56 -g -O1 -Wsystype=oss -Wboost -Wcall_shared -L/usr/boost_1_56/libv3 -lboostx_unit_test_framework -llibboostx_prg_exec_monitor.a helloCTest.o  -o test.exe 
+
+
+quickstart:  helloC.o 
+run_C_test:
+	@echo "\n------------------------------------------------------"
+	@echo "Running C library tests with Boost Unit Test Framework"
+	@echo "------------------------------------------------------"
+	export _RLD_LIB_PATH=.:/G/system/system; \
+	./test.exe --show_progress --report_level=detailed
+

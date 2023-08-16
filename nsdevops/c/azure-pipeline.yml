@@ -1,0 +1,18 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+
+
+trigger:
+- master
+
+pool: Default
+
+steps:
+- script: compile.bat
+  displayName: 'Build using batch script method'
+
+- script: |
+    echo Build complete
+    echo Testing
+  displayName: 'Run a multi-line script'
