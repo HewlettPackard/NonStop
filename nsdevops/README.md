@@ -12,6 +12,7 @@ The following are the starter kits available
 | Java Starter Kit      | CI sample for Java based applications built off-platform                       | java    |
 | Java JNI Starter Kit  | CI sample for polygot Java and C applications built on-platform on NonStop     | javajni |
 | Pyton Starter Kit     | CI sample for Pythons based applications                                       | python  |
+| C Starter Kit         | CI sample for C/C++ based OSS applications built off-platform                  | c       |
 | CD Starter Kit        | Continuous Deployment using NonStop Manageability Framework (NSMF) and Ansible | cd      |
 
 Each starter kit comprises of 
