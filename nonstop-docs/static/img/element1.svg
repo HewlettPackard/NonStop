@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="380" height="380">
+<path style="fill:#010101; stroke:none;" d="M0 0L0 380L380 380L380 0L0 0z"/>
+<path style="fill:#ffffff; stroke:none;" d="M51 149L51 150L56 149L51 149M60 149L60 150L63 150L60 149z"/>
+<path style="fill:#19b389; stroke:none;" d="M49 150L49 231L331 231L331 150L49 150z"/>
+<path style="fill:#ffffff; stroke:none;" d="M46 152L46 153L49 154L49 151L46 152z"/>
+<path style="fill:#31bc95; stroke:none;" d="M66 167L67 168L66 167z"/>
+<path style="fill:#67cdb0; stroke:none;" d="M67.6034 168.028C65.082 170.025 66.0002 175.197 66 178L66 204C66.0015 207.291 65.1176 212.485 69.1481 213.682C74.3813 215.236 81.5635 214 87 214L126 214L253 214L296 214C300.125 214 309 215.662 312.397 212.972C314.918 210.975 314 205.803 314 203L314 177C313.999 173.709 314.882 168.515 310.852 167.318C305.619 165.764 298.436 167 293 167L254 167L127 167L84 167C79.8748 167 70.9999 165.338 67.6034 168.028z"/>
+<path style="fill:#31bc95; stroke:none;" d="M313 167L314 168L313 167z"/>
+<path style="fill:#010101; stroke:none;" d="M67 168L67 213L313 213L313 168L67 168z"/>
+<path style="fill:#31bc95; stroke:none;" d="M66 213L67 214L66 213M313 213L314 214L313 213z"/>
+</svg>
