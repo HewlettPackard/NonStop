@@ -5,10 +5,10 @@ The Pre-requisite setup, tooling, gating criteria and artifacts like the Jenkins
 ## Contents 
 The package contains a C application that prints the SUT version & System Information, JenkinsFile that can be used to automate the Continuous Integration Workflow and CStarterKitUsageInstruction.docx file that provides instructions to use the C application.
 
-##System Requirements 
+## System Requirements 
 Refer to the HPE Nonstop Server-Modern DevOps-Instructions-for-CI-CD-Setup Documnet_v1.1.pdf for details 
 
-##Required Software  
+## Required Software  
 Jenkins	 			2.222.3 or later
 GITHub	 			2.26.2-64-bit or later
 NSDev Cross Compilers L17.08 or later
