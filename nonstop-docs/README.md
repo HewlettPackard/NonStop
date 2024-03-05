@@ -1,7 +1,14 @@
-# Website
+# NonStop Docs
 
-This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
+This website is a first draft of our **NonStop documentation site for developers**, and is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
 
+While we have great starter kits - this app aims to build tutorials in a manner we are familiar with - consistent with other documentation sites. Do bear with us as we try to build this up one by one.
+
+### To Run:
+Download this folder, use the command line to navigate into nonstop-docs folder, and run this command.
+```
+npm run start
+```
 ### Installation
 
 ```
