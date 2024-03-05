@@ -32,14 +32,14 @@ Hence the following are the system requirement
 SSH access is required to the NonStop node from the centralized Jenkins Master Node. 
 
 ## Using the Starter Kits 
-**Following are the steps to use the starter-kits **
+**Following are the steps to use the starter-kits**
 1. Clone to repository to your PC. 
 2. Setup the DevOps Environment following the steps given in the README file 
 4. Update the Application/Test Suite IP addresses as per your setup 
 5. Update the place holders in the pipeline scripts with values in accordance with your setup
 6. Upload to the your GIT Repository and trigger the pipeline 
 
-**Following are the steps to re-use the pipeline scripts for your application **
+**Following are the steps to re-use the pipeline scripts for your application**
 1. Update the pipeline scripts to point to the GIT Repository of your application 
 2. Update the scripts to setup the environment (build, test and dependencies) in accordance to your application 
 3. Update the scripts copy your application and its testware, and deploy your application on NonStop
