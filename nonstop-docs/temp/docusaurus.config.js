@@ -10,16 +10,18 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'HPE NonStop Developer Portal',
   tagline: "NonStop upgrades the world's IT services by removing the need for clustering and load balancing.",
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  url: 'https://github.com',
+  baseUrl: '/NonStop',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/element.svg',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'hpe', // Usually your GitHub org/user name.
-  projectName: 'nonstop-docs', // Usually your repo name.
+  organizationName: 'HewlettPackard', // Usually your GitHub org/user name.
+  projectName: 'NonStop', // Usually your repo name.
+  deploymentBranch: 'gh-pages',
+ 
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
