@@ -1,4 +1,4 @@
-# NSDevOps Java Starter Kit
+# NSDevOps CI/CD Starter Kit
 This package is designed to demonstrate the Continuous Deployment with NonStop Manageability Framework & Ansible
 The Pre-requisite setup, tooling, gating criteria and artifacts like the JenkinsFile can be used to automate the Continuous Deployment Phase. This pipeline demonstrates the following workflow
 
