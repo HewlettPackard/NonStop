@@ -2,9 +2,9 @@
 
 ### Abstract
 
-This manual describes how to use the HPE Nonstop IDE Software for VS Code for developing Nonstop applications in Visual Studio Code. It supplements Visual Studio Code and Microsoft C/C++ Extension documentation, providing information specific to Nonstop development, building, deploying, and debugging.
+This manual describes how to use the HPE Nonstop IDE Software for VS Code for developing Nonstop C/C++ applications in Visual Studio Code. It supplements Visual Studio Code and Microsoft C/C++ Extension documentation, providing information specific to Nonstop development, building, deploying, and debugging.
 
-**Published** : October 2026
+**Published** : August 2026
 
 ### Notices
 
